@@ -3,7 +3,7 @@
   "info" : {
     "version" : "1.0.0",
     "title" : "Homer",
-    "description" : "Homer-API provides a simple REST API to manage IOT devices."
+    "description" : "Homer-API provides a simple REST API to manage IOT devices. With Homer-API you may register and control your IOT devices and get access to measurement data your devices are generating."
   },
   "consumes" : [ "application/json" ],
   "produces" : [ "application/json", "text/html" ],
@@ -17,7 +17,7 @@
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "body",
-          "name" : "body",
+          "name" : "deviceObject",
           "description" : "Device object that needs to be added to the device database",
           "required" : true,
           "schema" : {
@@ -25,6 +25,15 @@
           }
         } ],
         "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "items" : {
+                "$ref" : "#/definitions/Device"
+              }
+            }
+          },
           "405" : {
             "description" : "Invalid input"
           }
@@ -39,7 +48,7 @@
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "body",
-          "name" : "body",
+          "name" : "deviceObject",
           "description" : "Device object that needs to be updated in the databse",
           "required" : true,
           "schema" : {
@@ -47,6 +56,15 @@
           }
         } ],
         "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "items" : {
+                "$ref" : "#/definitions/Device"
+              }
+            }
+          },
           "400" : {
             "description" : "Invalid ID supplied"
           },
@@ -125,6 +143,15 @@
           "format" : "int64"
         } ],
         "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "items" : {
+                "$ref" : "#/definitions/Device"
+              }
+            }
+          },
           "400" : {
             "description" : "Invalid ID supplied"
           },
