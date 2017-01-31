@@ -1,16 +1,178 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "Homer-API provides a simple REST API to manage IOT devices.",
     "version" : "1.0.0",
-    "title" : "Homer API test",
-    "termsOfService" : "http://swagger.io/terms/",
-    "contact" : {
-      "email" : "apiteam@swagger.io"
+    "title" : "Homer",
+    "description" : "Homer-API provides a simple REST API to manage IOT devices."
+  },
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json", "text/html" ],
+  "paths" : {
+    "/device" : {
+      "post" : {
+        "tags" : [ "IOT device" ],
+        "description" : "You may create a new IOT device using this action. It takes a JSON object containing parameters",
+        "operationId" : "addDevice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Device object that needs to be added to the device database",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Device"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "IOT device" ],
+        "summary" : "Update an existing device",
+        "description" : "",
+        "operationId" : "updateDevice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Device object that needs to be updated in the databse",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Device"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Device not found"
+          },
+          "405" : {
+            "description" : "Validation exception"
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "IOT device" ],
+        "summary" : "Finds all devices",
+        "description" : "",
+        "operationId" : "findAllDevicesInDatabase",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Device"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid status value"
+          }
+        }
+      }
     },
-    "license" : {
-      "name" : "Apache 2.0",
-      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    "/device/{deviceId}" : {
+      "get" : {
+        "tags" : [ "device" ],
+        "summary" : "Find a device by ID",
+        "description" : "Returns a single device",
+        "operationId" : "getDeviceById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "deviceId",
+          "in" : "path",
+          "description" : "ID of device to return",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Device"
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Device not found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "device" ],
+        "summary" : "Deletes a device",
+        "description" : "",
+        "operationId" : "deleteDevice",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "deviceId",
+          "in" : "path",
+          "description" : "Device id to delete",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Device not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Device" : {
+      "type" : "object",
+      "properties" : {
+        "deviceId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "serialNumber" : {
+          "type" : "string"
+        },
+        "deviceType" : {
+          "type" : "string",
+          "enum" : [ "sensor", "button", "other" ]
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "location" : {
+          "type" : "string"
+        },
+        "IPAddress" : {
+          "type" : "string"
+        },
+        "storageUpdatePeriod" : {
+          "type" : "integer",
+          "format" : "int64",
+          "default" : 10000
+        },
+        "registeredAt" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "modifiedAt" : {
+          "type" : "string",
+          "format" : "date-time"
+        }
+      }
     }
   },
   "host" : "virtserver.swaggerhub.com",
